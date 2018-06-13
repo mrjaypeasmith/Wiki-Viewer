@@ -2,9 +2,10 @@
 
 const customForm = document.getElementById('customForm');
 
+// Add event listener to submit
 customForm.addEventListener('submit', (e) => {
-    e.preventDefault();
-    console.log(this.searchArticle.value);
+    //Prevents page reloading
+    e.preventDefault(); 
     const searchQuery = this.searchArticle.value;
 
     if(searchQuery !== ''){
