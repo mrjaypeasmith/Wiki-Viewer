@@ -6,23 +6,20 @@ const customForm = document.getElementById('customForm');
 customForm.addEventListener('submit', (e) => {
     //Prevents page reloading
     e.preventDefault(); 
+    // Assign inoput to variable
     const searchQuery = this.searchArticle.value;
-
+    // If search query entered
     if(searchQuery !== ''){
+        // Call fetch function
         getArticles(searchQuery);
         // Fire off toast
         Materialize.toast('Search submitted!', 1000, 'green');
-        console.log('Search successful');
         // Clear search form
         document.getElementById('searchArticle').value = '';
     } else {
-        
         // Fire off toast
         Materialize.toast('Please enter searh term', 3000, 'red');
-        console.log('No search term submitted');
     }
-
-
 });
 
 // Using fetch data from Wikipedia API
@@ -31,29 +28,24 @@ function getArticles(searchQuery){
     fetch(remoteUrlWithOrigin)
     .then((res) => res.json())
     .then((data) => {
-        
+        // Instantiate output as empty sting literal
         let output = ``; 
+        // Assign data object to variable 
         let searchResults = data.query.search;
+        // Loop through assigned data object
         searchResults.forEach(function(item){
-
+            // Set each value to variable 
             let itemTitle = item.title;
             let itemSnippet = item.snippet;
             let itemid = item.pageid;
-            let itemLink = `https://en.wikipedia.org/?curid=${item.pageid}`;
-            
+            let itemLink = `https://en.wikipedia.org/?curid=${itemid}`;
+            // Create elements for each item (+= appends)
             output += `<a href="${itemLink}" target="_blank" class="collection-item black-text"><h5>${itemTitle}</h5><br><span class=" grey-text">${itemSnippet}<span>...</a>`;
-
-            // // Add items to DOM
-            
-            //document.getElementById('output').innerHTML = `<a href="${itemLink}" target="_blank" class="collection-item">${itemTitle}</a>`;
-
-            
         });
-
+        // Add items to dom
         document.getElementById('output').innerHTML = output;
-        
-    //    console.log(searchResults);
     })
+    // Console log error if fetch fails
     .catch(error => console.error('Error:', error));
 }
 
